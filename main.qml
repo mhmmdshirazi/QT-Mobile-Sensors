@@ -14,7 +14,9 @@ Window {
         repeat: true
         onTriggered: {
             var acc = sensors.readAccelerometer()
-            accelerometerInd.text = qsTr("Accelerometer x: %1 \nAccelerometer y: %2 \nAccelerometer z: %3").arg(acc[0]).arg(acc[1]).arg(acc[2])
+            if (chooseSensor.currentText == "Accelerometer") {
+                accelerometerInd.text = qsTr("Accelerometer x: %1 \nAccelerometer y: %2 \nAccelerometer z: %3").arg(acc[0]).arg(acc[1]).arg(acc[2])
+            }
         }
     }
 
@@ -48,8 +50,21 @@ Window {
         anchors.left: parent.left
         anchors.leftMargin: 30
         anchors.top: parent.top
-        anchors.topMargin: 48
+        anchors.topMargin: 100
         font.pixelSize: 12
+    }
+
+    ComboBox {
+        id: chooseSensor
+        x: 118
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 32
+        model: ListModel{
+            ListElement { text:"Accelerometer"; key :"Accelerometer"; value : 1}
+            ListElement { text:"Gyroscope";key :"Gyroscope"; value : 2}
+            ListElement { text:"Magnetometer";key :"Magnetometer"; value :3}
+        }
     }
 
 }
