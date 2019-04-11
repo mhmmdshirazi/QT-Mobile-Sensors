@@ -14,8 +14,17 @@ public:
     ////// read Sensors
     /// Accelerometer
     Q_INVOKABLE QList <qreal> readAccelerometer();
+    Q_INVOKABLE QList <qreal> readGyro();
+    Q_INVOKABLE QList <qreal> readMagnetometer();
+
 private:
-    QSensor *sensor;
+    QSensor *sensorAcc;
+    QSensor *sensorGyro;
+    QSensor *sensorMag;
+    QSensor *sensorTilt;
+    QSensor *sensorCompass;
+    QSensor *sensorAmbient;
+
 };
 
 #endif // READSENSORS_H
