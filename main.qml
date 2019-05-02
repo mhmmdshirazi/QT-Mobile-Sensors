@@ -6,11 +6,15 @@ Window {
     visible: true
     title: qsTr("Sensors")
 
-//////// Set a timer to measure data
+    //////// Set a timer to measure data
     Timer {
         interval: 16
         running: true
         repeat: true
+
+        property double tiltXFiltered: 0
+        property double tiltYFiltered: 0
+
         onTriggered: {
             var acc = sensors.readAccelerometer()
             var gyro = sensors.readGyro()
@@ -24,10 +28,40 @@ Window {
             } else if (chooseSensor.currentText == "Magnetometer") {
                 sensorInd.text = qsTr("X: %1 \nY: %2 \nZ: %3").arg(mag[0]).arg(mag[1]).arg(mag[2])
             } else if (chooseSensor.currentText == "Compass") {
-                sensorInd.text = qsTr("Val: %1").arg(compass[0])
+                sensorInd.text = qsTr("Val: %1 , %2").arg(compass[0]).arg(Math.sin(90))
             } else if (chooseSensor.currentText == "Tilt") {
                 sensorInd.text = qsTr("X: %1 \nY: %2").arg(tilt[0]).arg(tilt[1])
             }
+
+            /// move the bubble
+            if (tilt[0] > 45) {
+                tilt[0] = 45
+            }
+            if (tilt[0] < -45) {
+                tilt[0] = -45
+            }
+            if (tilt[1] > 45) {
+                tilt[1] = 45
+            }
+            if (tilt[1] < -45) {
+                tilt[1] = -45
+            }
+
+            tiltXFiltered = 0.9 * tiltXFiltered + 0.1 * tilt[1]
+            tiltYFiltered = 0.9 * tiltYFiltered + 0.1 * tilt[0]
+
+            bubble.x = -bubble.width/2 + area.width/2 - tiltXFiltered * 2
+            bubble.y = -bubble.width/2 + area.width/2 - tiltYFiltered * 2
+
+            /// move the compass
+
+            compassInd.x = Math.sin(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 - compassInd.height/2) + area.width/2 - compassInd.width/2
+            compassInd.y = Math.cos(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 - compassInd.height/2) + area.width/2 - compassInd.height/2
+            compassInd.rotation = -compass[0] - 180
+
+            north.x = Math.sin(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 + compassInd.height/2) + area.width/2 - north.width/2
+            north.y = Math.cos(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 + compassInd.height/2) + area.width/2 - north.height/2
+            north.rotation = -compass[0] - 180
         }
     }
 
@@ -83,17 +117,47 @@ Window {
         }
     }
 
+    Rectangle{
+        id: area
+        x: 138
+        y: 373
+        width: 250
+        height: 250
+        color: "#000000"
+        radius: width/2
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 100
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        Rectangle{
+            id: bubble
+            x : 0 + parent.width/2 - width/2
+            y : 0 + parent.width/2 - width/2
+            width: 40
+            height: 40
+            color: "#FFFFFF"
+            radius: width/2
+        }
+        Rectangle {
+            id: compassInd
+            x: parent.width/2
+            y: 0
+            rotation: 0
+            width: 5
+            height: 35
+            color: "#f40b0b"
+        }
+        Text {
+            id: north
+            text: qsTr("N")
+        }
+    }
+
+
+
+
+
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
