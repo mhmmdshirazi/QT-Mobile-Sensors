@@ -16,6 +16,8 @@ public:
     Q_INVOKABLE QList <qreal> readAccelerometer();
     Q_INVOKABLE QList <qreal> readGyro();
     Q_INVOKABLE QList <qreal> readMagnetometer();
+    Q_INVOKABLE QList <qreal> readCompass();
+    Q_INVOKABLE QList <qreal> readTilt();
 
 private:
     QSensor *sensorAcc;
@@ -23,7 +25,7 @@ private:
     QSensor *sensorMag;
     QSensor *sensorTilt;
     QSensor *sensorCompass;
-    QSensor *sensorAmbient;
+
 
 };
 
