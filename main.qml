@@ -55,13 +55,37 @@ Window {
 
             /// move the compass
 
-            compassInd.x = Math.sin(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 - compassInd.height/2) + area.width/2 - compassInd.width/2
-            compassInd.y = Math.cos(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 - compassInd.height/2) + area.width/2 - compassInd.height/2
-            compassInd.rotation = -compass[0] - 180
+            compassIndN.x = Math.sin(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.width/2
+            compassIndN.y = Math.cos(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.height/2
+            compassIndN.rotation = -compass[0] - 180
 
-            north.x = Math.sin(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 + compassInd.height/2) + area.width/2 - north.width/2
-            north.y = Math.cos(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 + compassInd.height/2) + area.width/2 - north.height/2
+            compassIndS.x = Math.sin(compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.width/2
+            compassIndS.y = Math.cos(compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.height/2
+            compassIndS.rotation = -compass[0]
+
+            compassIndW.x = Math.sin(Math.PI/2 + compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.width/2
+            compassIndW.y = Math.cos(Math.PI/2 + compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.height/2
+            compassIndW.rotation = -compass[0] - 90
+
+            compassIndE.x = Math.sin(Math.PI/2 + Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.width/2
+            compassIndE.y = Math.cos(Math.PI/2 + Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.height/2
+            compassIndE.rotation = -compass[0] - 270
+
+            north.x = Math.sin(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.width/2
+            north.y = Math.cos(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.height/2
             north.rotation = -compass[0] - 180
+
+            south.x = Math.sin(compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.width/2
+            south.y = Math.cos(compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.height/2
+            south.rotation = -compass[0]
+
+            east.x = Math.sin(Math.PI/2 + compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.width/2
+            east.y = Math.cos(Math.PI/2 + compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.height/2
+            east.rotation = -compass[0] - 270
+
+            west.x = Math.sin(Math.PI + Math.PI/2 + compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.width/2
+            west.y = Math.cos(Math.PI + Math.PI/2 + compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.height/2
+            west.rotation = -compass[0] - 90
         }
     }
 
@@ -139,7 +163,34 @@ Window {
             radius: width/2
         }
         Rectangle {
-            id: compassInd
+            id: compassIndN
+            x: parent.width/2
+            y: 0
+            rotation: 0
+            width: 5
+            height: 35
+            color: "#f40b0b"
+        }
+        Rectangle {
+            id: compassIndS
+            x: parent.width/2
+            y: 0
+            rotation: 0
+            width: 5
+            height: 35
+            color: "#f40b0b"
+        }
+        Rectangle {
+            id: compassIndW
+            x: parent.width/2
+            y: 0
+            rotation: 0
+            width: 5
+            height: 35
+            color: "#f40b0b"
+        }
+        Rectangle {
+            id: compassIndE
             x: parent.width/2
             y: 0
             rotation: 0
@@ -150,6 +201,18 @@ Window {
         Text {
             id: north
             text: qsTr("N")
+        }
+        Text {
+            id: south
+            text: qsTr("S")
+        }
+        Text {
+            id: west
+            text: qsTr("W")
+        }
+        Text {
+            id: east
+            text: qsTr("E")
         }
     }
 
