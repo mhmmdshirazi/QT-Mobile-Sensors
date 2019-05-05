@@ -5,9 +5,9 @@ Here's a simple Qt application for mobile devices both IOS and Android. It can c
 ![alt text][b]
 ![alt text][c]
 
-[a]: ./screen shots/photo_2019-05-05_21-15-57.jpg
-[b]: ./screen shots/photo_2019-05-05_21-16-00.jpg
-[c]: ./screen shots/photo_2019-05-05_21-16-02.jpg
+[a]: ./screen shots/photo_2019-05-05_21-15-57.jpg "a"
+[b]: ./screen shots/photo_2019-05-05_21-16-00.jpg "b"
+[c]: ./screen shots/photo_2019-05-05_21-16-02.jpg "c"
 
 
 
