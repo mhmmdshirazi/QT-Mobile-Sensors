@@ -1,36 +1,264 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.5
-Window {
+import QtCharts 2.0
+Item {
     id: window
+
     visible: true
-    title: qsTr("Sensors")
 
     //////// Set a timer to measure data
     Timer {
-        interval: 16
+        interval: 50
         running: true
         repeat: true
 
         property double tiltXFiltered: 0
         property double tiltYFiltered: 0
-
+        property int second: 0
+        property int minute: 0
+        property double _mSec: 0
         onTriggered: {
+            _mSec += 0.050
             var acc = sensors.readAccelerometer()
             var gyro = sensors.readGyro()
             var mag = sensors.readMagnetometer()
             var compass = sensors.readCompass()
             var tilt = sensors.readTilt()
+
             if (chooseSensor.currentText == "Accelerometer") {
                 sensorInd.text = qsTr("X: %1 \nY: %2 \nZ: %3").arg(acc[0]).arg(acc[1]).arg(acc[2])
+                if (mPlot.focus) {
+                    mPlot.seriesData1.append(_mSec,acc[0])
+                    mPlot.seriesData2.append(_mSec,acc[1])
+                    mPlot.seriesData3.append(_mSec,acc[2])
+                    mPlot.seriesData1.name = "X"
+                    mPlot.seriesData2.name = "Y"
+                    mPlot.seriesData3.name = "Z"
+                    if(_mSec > 2) {
+                        mPlot.timeAxis.max = _mSec
+                        mPlot.timeAxis.min = _mSec - 2
+
+                        mPlot.seriesData1.removePoints(0,mPlot.seriesData1.count - 40)
+                        mPlot.seriesData2.removePoints(0,mPlot.seriesData2.count - 40)
+                        mPlot.seriesData3.removePoints(0,mPlot.seriesData3.count - 40)
+
+                    } else {
+                        mPlot.timeAxis.max = _mSec
+                        mPlot.timeAxis.min = 0
+                    }
+                    var maxVal = -1000
+                    var minVal = 1000
+
+                    for (var i = 0 ; i < mPlot.seriesData1.count ; i++) {
+                        if(mPlot.seriesData1.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData1.at(i).y
+                        }
+                        if(mPlot.seriesData1.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData1.at(i).y
+                        }
+                        if(mPlot.seriesData2.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData2.at(i).y
+                        }
+                        if(mPlot.seriesData2.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData2.at(i).y
+                        }
+                        if(mPlot.seriesData3.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData3.at(i).y
+                        }
+                        if(mPlot.seriesData3.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData3.at(i).y
+                        }
+
+                    }
+
+                    mPlot.valAxis.max = maxVal
+                    mPlot.valAxis.min = minVal
+                }
             } else if (chooseSensor.currentText == "Gyroscope") {
                 sensorInd.text = qsTr("X: %1 \nY: %2 \nZ: %3").arg(gyro[0]).arg(gyro[1]).arg(gyro[2])
+                if (mPlot.focus) {
+                    mPlot.seriesData1.append(_mSec,gyro[0])
+                    mPlot.seriesData2.append(_mSec,gyro[1])
+                    mPlot.seriesData3.append(_mSec,gyro[2])
+
+                    mPlot.seriesData1.name = "X"
+                    mPlot.seriesData2.name = "Y"
+                    mPlot.seriesData3.name = "Z"
+                    if(_mSec > 2) {
+                        mPlot.timeAxis.max = _mSec
+                        mPlot.timeAxis.min = _mSec - 2
+
+                        mPlot.seriesData1.removePoints(0,mPlot.seriesData1.count - 40)
+                        mPlot.seriesData2.removePoints(0,mPlot.seriesData2.count - 40)
+                        mPlot.seriesData3.removePoints(0,mPlot.seriesData3.count - 40)
+
+                    } else {
+                        mPlot.timeAxis.max = _mSec
+                        mPlot.timeAxis.min = 0
+                    }
+                    var maxVal = -1000
+                    var minVal = 1000
+
+                    for (var i = 0 ; i < mPlot.seriesData1.count ; i++) {
+                        if(mPlot.seriesData1.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData1.at(i).y
+                        }
+                        if(mPlot.seriesData1.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData1.at(i).y
+                        }
+                        if(mPlot.seriesData2.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData2.at(i).y
+                        }
+                        if(mPlot.seriesData2.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData2.at(i).y
+                        }
+                        if(mPlot.seriesData3.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData3.at(i).y
+                        }
+                        if(mPlot.seriesData3.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData3.at(i).y
+                        }
+
+                    }
+
+                    mPlot.valAxis.max = maxVal
+                    mPlot.valAxis.min = minVal
+
+                }
             } else if (chooseSensor.currentText == "Magnetometer") {
                 sensorInd.text = qsTr("X: %1 \nY: %2 \nZ: %3").arg(mag[0]).arg(mag[1]).arg(mag[2])
+                if (mPlot.focus) {
+                    mPlot.seriesData1.append(_mSec,mag[0])
+                    mPlot.seriesData2.append(_mSec,mag[1])
+                    mPlot.seriesData3.append(_mSec,mag[2])
+                    mPlot.seriesData1.name = "X"
+                    mPlot.seriesData2.name = "Y"
+                    mPlot.seriesData3.name = "Z"
+                    if(_mSec > 2) {
+                        mPlot.timeAxis.max = _mSec
+                        mPlot.timeAxis.min = _mSec - 2
+
+                        mPlot.seriesData1.removePoints(0,mPlot.seriesData1.count - 40)
+                        mPlot.seriesData2.removePoints(0,mPlot.seriesData2.count - 40)
+                        mPlot.seriesData3.removePoints(0,mPlot.seriesData3.count - 40)
+
+                    } else {
+                        mPlot.timeAxis.max = _mSec
+                        mPlot.timeAxis.min = 0
+                    }
+                    var maxVal = -1000
+                    var minVal = 1000
+
+                    for (var i = 0 ; i < mPlot.seriesData1.count ; i++) {
+                        if(mPlot.seriesData1.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData1.at(i).y
+                        }
+                        if(mPlot.seriesData1.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData1.at(i).y
+                        }
+                        if(mPlot.seriesData2.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData2.at(i).y
+                        }
+                        if(mPlot.seriesData2.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData2.at(i).y
+                        }
+                        if(mPlot.seriesData3.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData3.at(i).y
+                        }
+                        if(mPlot.seriesData3.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData3.at(i).y
+                        }
+
+                    }
+
+                    mPlot.valAxis.max = maxVal
+                    mPlot.valAxis.min = minVal
+                }
             } else if (chooseSensor.currentText == "Compass") {
                 sensorInd.text = qsTr("Val: %1 , %2").arg(compass[0]).arg(Math.sin(90))
+                if (mPlot.focus) {
+                    mPlot.seriesData1.append(_mSec,compass[0])
+                  //  console.log(mPlot.seriesData1.at(10).y , mPlot.valAxis.max , mPlot.seriesData1.at(10).y > mPlot.valAxis.max)
+                    var maxVal = -1000
+                    var minVal = 1000
+
+                    for (var i = 0 ; i < mPlot.seriesData1.count ; i++) {
+                        if(mPlot.seriesData1.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData1.at(i).y
+                        }
+                        if(mPlot.seriesData1.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData1.at(i).y
+                        }
+
+                    }
+
+                    mPlot.valAxis.max = maxVal
+                    mPlot.valAxis.min = minVal
+
+                    mPlot.seriesData1.name = "Value"
+                    mPlot.seriesData2.name = ""
+                    mPlot.seriesData2.name = ""
+                    if(_mSec > 2) {
+                        mPlot.timeAxis.max = _mSec
+                        mPlot.timeAxis.min = _mSec - 2
+                        mPlot.seriesData1.removePoints(0,mPlot.seriesData1.count - 40)
+                        mPlot.seriesData2.removePoints(0,mPlot.seriesData2.count - 40)
+                        mPlot.seriesData3.removePoints(0,mPlot.seriesData3.count - 40)
+
+                    } else {
+                        mPlot.timeAxis.max = _mSec
+                        mPlot.timeAxis.min = 0
+                    }
+
+                }
             } else if (chooseSensor.currentText == "Tilt") {
                 sensorInd.text = qsTr("X: %1 \nY: %2").arg(tilt[0]).arg(tilt[1])
+                if (mPlot.focus) {
+                    mPlot.seriesData1.append(_mSec,tilt[0])
+                    mPlot.seriesData2.append(_mSec,tilt[1])
+                    mPlot.seriesData1.name = "X"
+                    mPlot.seriesData2.name = "Y"
+                    if(_mSec > 2) {
+                        mPlot.timeAxis.max = _mSec
+                        mPlot.timeAxis.min = _mSec - 2
+
+                        mPlot.seriesData1.removePoints(0,mPlot.seriesData1.count - 40)
+                        mPlot.seriesData2.removePoints(0,mPlot.seriesData2.count - 40)
+                        mPlot.seriesData3.removePoints(0,mPlot.seriesData3.count - 40)
+
+                    } else {
+                        mPlot.timeAxis.max = _mSec
+                        mPlot.timeAxis.min = 0
+                    }
+                    var maxVal = -1000
+                    var minVal = 1000
+
+                    for (var i = 0 ; i < mPlot.seriesData1.count ; i++) {
+                        if(mPlot.seriesData1.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData1.at(i).y
+                        }
+                        if(mPlot.seriesData1.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData1.at(i).y
+                        }
+                        if(mPlot.seriesData2.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData2.at(i).y
+                        }
+                        if(mPlot.seriesData2.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData2.at(i).y
+                        }
+                        if(mPlot.seriesData3.at(i).y > maxVal) {
+                          maxVal =  mPlot.seriesData3.at(i).y
+                        }
+                        if(mPlot.seriesData3.at(i).y < minVal) {
+                          minVal =  mPlot.seriesData3.at(i).y
+                        }
+
+                    }
+
+                    mPlot.valAxis.max = maxVal
+                    mPlot.valAxis.min = minVal
+                }
             }
 
             /// move the bubble
@@ -49,69 +277,46 @@ Window {
 
             tiltXFiltered = 0.9 * tiltXFiltered + 0.1 * tilt[1]
             tiltYFiltered = 0.9 * tiltYFiltered + 0.1 * tilt[0]
+            if(mCompass.focus) {
+                mCompass.bubbleX = -mCompass.bubbleWidth/2 + mCompass.areaWidth/2 - tiltXFiltered * 2
+                mCompass.bubbleY = -mCompass.bubbleWidth/2 + mCompass.areaWidth/2 - tiltYFiltered * 2
 
-            bubble.x = -bubble.width/2 + area.width/2 - tiltXFiltered * 2
-            bubble.y = -bubble.width/2 + area.width/2 - tiltYFiltered * 2
 
-            /// move the compass
+                /// move the mmCompass
+                mCompass.compassIndEX = 200
+                mCompass.compassIndNX = Math.sin(Math.PI + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 - mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassIndWidth/2
+                mCompass.compassIndNY = Math.cos(Math.PI + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 - mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassIndHeight/2
+                mCompass.compassIndNR = -compass[0] - 180
 
-            compassIndN.x = Math.sin(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.width/2
-            compassIndN.y = Math.cos(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.height/2
-            compassIndN.rotation = -compass[0] - 180
+                mCompass.compassIndSX = Math.sin(compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 - mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassIndWidth/2
+                mCompass.compassIndSY = Math.cos(compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 - mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassIndHeight/2
+                mCompass.compassIndSR = -compass[0]
 
-            compassIndS.x = Math.sin(compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.width/2
-            compassIndS.y = Math.cos(compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.height/2
-            compassIndS.rotation = -compass[0]
+                mCompass.compassIndWX = Math.sin(Math.PI/2 + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 - mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassIndWidth/2
+                mCompass.compassIndWY = Math.cos(Math.PI/2 + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 - mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassIndHeight/2
+                mCompass.compassIndWR = -compass[0] - 90
 
-            compassIndW.x = Math.sin(Math.PI/2 + compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.width/2
-            compassIndW.y = Math.cos(Math.PI/2 + compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.height/2
-            compassIndW.rotation = -compass[0] - 90
+                mCompass.compassIndEX = Math.sin(Math.PI/2 + Math.PI + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 - mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassIndWidth/2
+                mCompass.compassIndEY = Math.cos(Math.PI/2 + Math.PI + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 - mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassIndHeight/2
+                mCompass.compassIndER = -compass[0] - 270
 
-            compassIndE.x = Math.sin(Math.PI/2 + Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.width/2
-            compassIndE.y = Math.cos(Math.PI/2 + Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 - compassIndN.height/2) + area.width/2 - compassIndN.height/2
-            compassIndE.rotation = -compass[0] - 270
+                mCompass.northX = Math.sin(Math.PI + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 + mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassWordWidth/2
+                mCompass.northY = Math.cos(Math.PI + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 + mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassWordHeight/2
+                mCompass.northR = -compass[0] - 180
 
-            north.x = Math.sin(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.width/2
-            north.y = Math.cos(Math.PI + compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.height/2
-            north.rotation = -compass[0] - 180
+                mCompass.southX = Math.sin(compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 + mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassWordWidth/2
+                mCompass.southY = Math.cos(compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 + mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassWordHeight/2
+                mCompass.southR = -compass[0]
 
-            south.x = Math.sin(compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.width/2
-            south.y = Math.cos(compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.height/2
-            south.rotation = -compass[0]
+                mCompass.eastX = Math.sin(Math.PI/2 + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 + mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassWordWidth/2
+                mCompass.eastY = Math.cos(Math.PI/2 + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 + mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassWordHeight/2
+                mCompass.eastR = -compass[0] - 270
 
-            east.x = Math.sin(Math.PI/2 + compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.width/2
-            east.y = Math.cos(Math.PI/2 + compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.height/2
-            east.rotation = -compass[0] - 270
-
-            west.x = Math.sin(Math.PI + Math.PI/2 + compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.width/2
-            west.y = Math.cos(Math.PI + Math.PI/2 + compass[0]*(Math.PI/180)) * (area.width/2 + compassIndN.height/2) + area.width/2 - north.height/2
-            west.rotation = -compass[0] - 90
+                mCompass.westX = Math.sin(Math.PI + Math.PI/2 + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 + mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassWordWidth/2
+                mCompass.westY = Math.cos(Math.PI + Math.PI/2 + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 + mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassWordHeight/2
+                mCompass.westR = -compass[0] - 90
+            }
         }
-    }
-
-    Text {
-        id: element
-        x: 363
-        width: 24
-        height: 37
-        text: qsTr("top")
-        anchors.top: parent.top
-        anchors.topMargin: 0
-        anchors.horizontalCenter: parent.horizontalCenter
-        font.pixelSize: 12
-    }
-
-    Text {
-        id: element1
-        x: 176
-        y: 630
-        width: 24
-        height: 37
-        text: qsTr("Buttom")
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
-        font.pixelSize: 12
     }
 
     Text {
@@ -141,81 +346,33 @@ Window {
         }
     }
 
-    Rectangle{
-        id: area
-        x: 138
-        y: 373
-        width: 250
-        height: 250
-        color: "#000000"
-        radius: width/2
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 100
-        anchors.horizontalCenter: parent.horizontalCenter
 
-        Rectangle{
-            id: bubble
-            x : 0 + parent.width/2 - width/2
-            y : 0 + parent.width/2 - width/2
-            width: 40
-            height: 40
-            color: "#FFFFFF"
-            radius: width/2
+    SwipeView {
+        id: swipeView
+        width: parent.width
+        antialiasing: true
+        anchors.topMargin: 200
+        anchors.bottomMargin: 67
+        visible: true
+        spacing: 0
+        wheelEnabled: false
+        hoverEnabled: false
+        currentIndex: 0
+
+        anchors.rightMargin: 0
+        anchors.leftMargin: 0
+        opacity: 1
+        anchors.fill: parent
+
+        Compass {
+            id: mCompass
+
         }
-        Rectangle {
-            id: compassIndN
-            x: parent.width/2
-            y: 0
-            rotation: 0
-            width: 5
-            height: 35
-            color: "#f40b0b"
+        Plot {
+            id: mPlot
         }
-        Rectangle {
-            id: compassIndS
-            x: parent.width/2
-            y: 0
-            rotation: 0
-            width: 5
-            height: 35
-            color: "#f40b0b"
-        }
-        Rectangle {
-            id: compassIndW
-            x: parent.width/2
-            y: 0
-            rotation: 0
-            width: 5
-            height: 35
-            color: "#f40b0b"
-        }
-        Rectangle {
-            id: compassIndE
-            x: parent.width/2
-            y: 0
-            rotation: 0
-            width: 5
-            height: 35
-            color: "#f40b0b"
-        }
-        Text {
-            id: north
-            text: qsTr("N")
-        }
-        Text {
-            id: south
-            text: qsTr("S")
-        }
-        Text {
-            id: west
-            text: qsTr("W")
-        }
-        Text {
-            id: east
-            text: qsTr("E")
-        }
+
     }
-
 
 
 
@@ -224,8 +381,30 @@ Window {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:0;autoSize:true;height:667;width:375}D{i:1;anchors_y:19}D{i:3;anchors_x:30;anchors_y:48}
-D{i:5;anchors_x:118}
+    D{i:0;autoSize:true;height:667;width:375}D{i:1;anchors_y:19}D{i:5;anchors_x:118}D{i:3;anchors_x:30;anchors_y:48}
+D{i:12;anchors_x:106}
 }
  ##^##*/

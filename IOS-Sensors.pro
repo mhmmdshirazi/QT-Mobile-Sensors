@@ -1,7 +1,9 @@
 QT += quick\
       sensors\
       network\
-      positioning
+      positioning\
+      charts\
+      qml
 
 CONFIG += c++11
 
