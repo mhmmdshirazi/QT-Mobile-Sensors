@@ -1,5 +1,6 @@
 #include "readsensors.h"
-
+////////// sensors
+///
 readSensors::readSensors(QObject *parent) : QObject(parent)
 {
     sensorAcc = new QSensor("QAccelerometer");
@@ -61,7 +62,3 @@ QList<qreal> readSensors::readTilt()
     temp.append(sensorTilt->reading()->property("yRotation").value<qreal>());
     return temp;
 }
-
-
-
-

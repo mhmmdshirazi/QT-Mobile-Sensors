@@ -6,7 +6,6 @@ Item {
     id: window
 
     visible: true
-
     //////// Set a timer to measure data
     Timer {
         interval: 50
@@ -25,8 +24,12 @@ Item {
             var mag = sensors.readMagnetometer()
             var compass = sensors.readCompass()
             var tilt = sensors.readTilt()
-
-            if (chooseSensor.currentText == "Accelerometer") {
+            var gpsData = gps.captureGpsData()
+            if (chooseSensor.currentText == "GPS"){
+                sensorInd.text = qsTr("Altitude: %1 \nLatitude: %2 \nLongitude: %3 \nHorizontal Accuracy: %4 \nGround Speed %5").
+                arg(gpsData[0]).arg(gpsData[1]).arg(gpsData[2]).arg(gpsData[3]).arg(gpsData[4])
+            }
+            else if (chooseSensor.currentText == "Accelerometer") {
                 sensorInd.text = qsTr("X: %1 \nY: %2 \nZ: %3").arg(acc[0]).arg(acc[1]).arg(acc[2])
                 if (mPlot.focus) {
                     mPlot.seriesData1.append(_mSec,acc[0])
@@ -52,22 +55,22 @@ Item {
 
                     for (var i = 0 ; i < mPlot.seriesData1.count ; i++) {
                         if(mPlot.seriesData1.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData1.at(i).y
+                            maxVal =  mPlot.seriesData1.at(i).y
                         }
                         if(mPlot.seriesData1.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData1.at(i).y
+                            minVal =  mPlot.seriesData1.at(i).y
                         }
                         if(mPlot.seriesData2.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData2.at(i).y
+                            maxVal =  mPlot.seriesData2.at(i).y
                         }
                         if(mPlot.seriesData2.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData2.at(i).y
+                            minVal =  mPlot.seriesData2.at(i).y
                         }
                         if(mPlot.seriesData3.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData3.at(i).y
+                            maxVal =  mPlot.seriesData3.at(i).y
                         }
                         if(mPlot.seriesData3.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData3.at(i).y
+                            minVal =  mPlot.seriesData3.at(i).y
                         }
 
                     }
@@ -102,22 +105,22 @@ Item {
 
                     for (var i = 0 ; i < mPlot.seriesData1.count ; i++) {
                         if(mPlot.seriesData1.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData1.at(i).y
+                            maxVal =  mPlot.seriesData1.at(i).y
                         }
                         if(mPlot.seriesData1.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData1.at(i).y
+                            minVal =  mPlot.seriesData1.at(i).y
                         }
                         if(mPlot.seriesData2.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData2.at(i).y
+                            maxVal =  mPlot.seriesData2.at(i).y
                         }
                         if(mPlot.seriesData2.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData2.at(i).y
+                            minVal =  mPlot.seriesData2.at(i).y
                         }
                         if(mPlot.seriesData3.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData3.at(i).y
+                            maxVal =  mPlot.seriesData3.at(i).y
                         }
                         if(mPlot.seriesData3.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData3.at(i).y
+                            minVal =  mPlot.seriesData3.at(i).y
                         }
 
                     }
@@ -152,22 +155,22 @@ Item {
 
                     for (var i = 0 ; i < mPlot.seriesData1.count ; i++) {
                         if(mPlot.seriesData1.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData1.at(i).y
+                            maxVal =  mPlot.seriesData1.at(i).y
                         }
                         if(mPlot.seriesData1.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData1.at(i).y
+                            minVal =  mPlot.seriesData1.at(i).y
                         }
                         if(mPlot.seriesData2.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData2.at(i).y
+                            maxVal =  mPlot.seriesData2.at(i).y
                         }
                         if(mPlot.seriesData2.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData2.at(i).y
+                            minVal =  mPlot.seriesData2.at(i).y
                         }
                         if(mPlot.seriesData3.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData3.at(i).y
+                            maxVal =  mPlot.seriesData3.at(i).y
                         }
                         if(mPlot.seriesData3.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData3.at(i).y
+                            minVal =  mPlot.seriesData3.at(i).y
                         }
 
                     }
@@ -179,16 +182,16 @@ Item {
                 sensorInd.text = qsTr("Val: %1 , %2").arg(compass[0]).arg(Math.sin(90))
                 if (mPlot.focus) {
                     mPlot.seriesData1.append(_mSec,compass[0])
-                  //  console.log(mPlot.seriesData1.at(10).y , mPlot.valAxis.max , mPlot.seriesData1.at(10).y > mPlot.valAxis.max)
+                    //  console.log(mPlot.seriesData1.at(10).y , mPlot.valAxis.max , mPlot.seriesData1.at(10).y > mPlot.valAxis.max)
                     var maxVal = -1000
                     var minVal = 1000
 
                     for (var i = 0 ; i < mPlot.seriesData1.count ; i++) {
                         if(mPlot.seriesData1.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData1.at(i).y
+                            maxVal =  mPlot.seriesData1.at(i).y
                         }
                         if(mPlot.seriesData1.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData1.at(i).y
+                            minVal =  mPlot.seriesData1.at(i).y
                         }
 
                     }
@@ -236,22 +239,22 @@ Item {
 
                     for (var i = 0 ; i < mPlot.seriesData1.count ; i++) {
                         if(mPlot.seriesData1.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData1.at(i).y
+                            maxVal =  mPlot.seriesData1.at(i).y
                         }
                         if(mPlot.seriesData1.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData1.at(i).y
+                            minVal =  mPlot.seriesData1.at(i).y
                         }
                         if(mPlot.seriesData2.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData2.at(i).y
+                            maxVal =  mPlot.seriesData2.at(i).y
                         }
                         if(mPlot.seriesData2.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData2.at(i).y
+                            minVal =  mPlot.seriesData2.at(i).y
                         }
                         if(mPlot.seriesData3.at(i).y > maxVal) {
-                          maxVal =  mPlot.seriesData3.at(i).y
+                            maxVal =  mPlot.seriesData3.at(i).y
                         }
                         if(mPlot.seriesData3.at(i).y < minVal) {
-                          minVal =  mPlot.seriesData3.at(i).y
+                            minVal =  mPlot.seriesData3.at(i).y
                         }
 
                     }
@@ -283,7 +286,6 @@ Item {
 
 
                 /// move the mmCompass
-                mCompass.compassIndEX = 200
                 mCompass.compassIndNX = Math.sin(Math.PI + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 - mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassIndWidth/2
                 mCompass.compassIndNY = Math.cos(Math.PI + compass[0]*(Math.PI/180)) * (mCompass.areaWidth/2 - mCompass.compassIndHeight/2) + mCompass.areaWidth/2 - mCompass.compassIndHeight/2
                 mCompass.compassIndNR = -compass[0] - 180
@@ -331,6 +333,10 @@ Item {
     ComboBox {
         id: chooseSensor
         x: 118
+        antialiasing: true
+        z: 1
+        scale: 0.9
+        clip: false
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.right: parent.right
         anchors.rightMargin: 70
@@ -343,10 +349,26 @@ Item {
             ListElement { key :"Magnetometer"; value :3}
             ListElement { key: "Compass"}
             ListElement { key: "Tilt"}
+            ListElement { key: "GPS"}
         }
     }
 
-
+    TabBar {
+        anchors.bottom: parent.bottom
+        width: parent.width
+        anchors.horizontalCenter: parent.horizontalCenter
+        id: pageChooser
+        currentIndex: swipeView.currentIndex
+        TabButton {
+            text: qsTr("Compass")
+        }
+        TabButton {
+            text: qsTr("Charts")
+        }
+        TabButton {
+            text: qsTr("Map")
+        }
+    }
     SwipeView {
         id: swipeView
         width: parent.width
@@ -357,54 +379,40 @@ Item {
         spacing: 0
         wheelEnabled: false
         hoverEnabled: false
-        currentIndex: 0
+        currentIndex: pageChooser.currentIndex
 
         anchors.rightMargin: 0
         anchors.leftMargin: 0
         opacity: 1
         anchors.fill: parent
+        onCurrentIndexChanged: {
+            if(currentIndex==2){
+                fullScreen.visible=true
+            }else{
+                fullScreen.visible=false
+            }
+            anchors.topMargin = 200
+        }
 
         Compass {
             id: mCompass
-
         }
         Plot {
             id: mPlot
         }
-
+        Map {
+            id: mMap
+        }
+    }
+    Button{
+        visible: false
+        id: fullScreen
+        text: "Full Screen"
+        anchors.bottom: swipeView.top
+        anchors.right: parent.right
+        onClicked: {
+            swipeView.anchors.topMargin = 0
+        }
     }
 
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*##^## Designer {
-    D{i:0;autoSize:true;height:667;width:375}D{i:1;anchors_y:19}D{i:5;anchors_x:118}D{i:3;anchors_x:30;anchors_y:48}
-D{i:12;anchors_x:106}
-}
- ##^##*/

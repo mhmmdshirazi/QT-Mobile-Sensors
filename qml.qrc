@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>Compass.qml</file>
         <file>Plot.qml</file>
+        <file>Map.qml</file>
     </qresource>
 </RCC>

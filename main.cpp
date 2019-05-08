@@ -5,7 +5,7 @@
 #include <QtWidgets/QApplication>
 #include <QtQuick/QQuickView>
 #include "readsensors.h"
-
+#include "readgps.h"
 int main(int argc, char *argv[])
 {
     // QT Auto Generate code
@@ -22,8 +22,10 @@ int main(int argc, char *argv[])
 
     // Define an object of readSensors Class
     readSensors *phoneSensors = new readSensors();
+    readGps *phoneGps = new readGps();
     // Introduce phoneSensors object to QML Engine
     viewer.engine()->rootContext()->setContextProperty("sensors",phoneSensors);
+    viewer.engine()->rootContext()->setContextProperty("gps",phoneGps);
 
     return app.exec();
 }

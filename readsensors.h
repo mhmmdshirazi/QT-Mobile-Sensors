@@ -6,6 +6,9 @@
 #include <QList>
 #include <QDebug>
 
+////////
+/// \brief The readSensors class
+///
 class readSensors : public QObject
 {
     Q_OBJECT
