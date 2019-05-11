@@ -4,5 +4,8 @@
         <file>Compass.qml</file>
         <file>Plot.qml</file>
         <file>Map.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>BG.qml</file>
+        <file>BGForm.ui.qml</file>
     </qresource>
 </RCC>

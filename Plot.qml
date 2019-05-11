@@ -7,7 +7,9 @@ Page {
     property alias seriesData3: series3
     property alias timeAxis: axisX
     property alias valAxis: axisY
-
+    background: Rectangle{
+                color:"transparent"
+    }
     //![1]
     ChartView {
         title: "Display Sensor data"
@@ -20,6 +22,7 @@ Page {
             min: 0
             max: 10
             tickCount: 5
+
         }
 
         ValueAxis {

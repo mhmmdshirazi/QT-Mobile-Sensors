@@ -2,10 +2,12 @@ import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.5
 import QtCharts 2.0
+import QtQuick.Controls.Material 2.3
 Item {
     id: window
-
     visible: true
+    Material.theme: Material.Dark
+    Material.accent: Material.DeepOrange
     //////// Set a timer to measure data
     Timer {
         interval: 50
@@ -328,6 +330,7 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: 100
         font.pixelSize: 12
+        color: "#A0A0A0"
     }
 
     ComboBox {
@@ -371,20 +374,18 @@ Item {
     }
     SwipeView {
         id: swipeView
-        width: parent.width
-        antialiasing: true
+        clip: false
+        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
         anchors.topMargin: 200
         anchors.bottomMargin: 67
-        visible: true
-        spacing: 0
-        wheelEnabled: false
-        hoverEnabled: false
         currentIndex: pageChooser.currentIndex
-
         anchors.rightMargin: 0
         anchors.leftMargin: 0
-        opacity: 1
-        anchors.fill: parent
+
+
         onCurrentIndexChanged: {
             if(currentIndex==2){
                 fullScreen.visible=true
@@ -404,6 +405,7 @@ Item {
             id: mMap
         }
     }
+
     Button{
         visible: false
         id: fullScreen
@@ -415,4 +417,16 @@ Item {
         }
     }
 
+    BG {
+        anchors.fill: parent
+        z:-10
+    }
+
 }
+
+
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}D{i:15;anchors_width:640}
+}
+ ##^##*/

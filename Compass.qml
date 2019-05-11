@@ -3,7 +3,9 @@ import QtQuick.Controls 2.5
 
 Page {
     // make alias to use in main.qml
-
+    background: Rectangle{
+        color:"transparent"
+    }
     property alias bubbleX: bubble.x
     property alias bubbleY: bubble.y
     property alias bubbleWidth: bubble.width
@@ -50,6 +52,7 @@ Page {
         height: 250
         color: "#000000"
         radius: width/2
+        border.color: "#ffffff"
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
 
@@ -101,18 +104,27 @@ Page {
         Text {
             id: north
             text: qsTr("N")
+            color: "#A0A0A0"
         }
         Text {
             id: south
             text: qsTr("S")
+            color: "#A0A0A0"
         }
         Text {
             id: west
             text: qsTr("W")
+            color: "#A0A0A0"
         }
         Text {
             id: east
             text: qsTr("E")
+            color: "#A0A0A0"
         }
     }
 }
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+ ##^##*/
